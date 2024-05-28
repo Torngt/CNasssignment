@@ -1,1 +1,11 @@
+1. Ip address        : 192.168.1.35
+2. Subnet Mask       : 255.255.255.0
+3. Network address   : 192.168.1.0
+4. Broadcast address : 192.168.1.255
 
+5. Total number of available addresses :
+	2^8=256
+(since two addresses are reserved. one as network address another as broadcast address)
+
+ total no. of end devices supported by network :
+      256-2=254
