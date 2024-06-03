@@ -1,0 +1,7 @@
+Check following of your own Network:
+a) IP Address
+b) Subnet Mask
+c) Broadcast Address
+d) The number of end devices your network support
+
+Simulate your networkon packet tracer.
