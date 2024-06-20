@@ -1,0 +1,16 @@
+Using ipconfig command in command prompt we can get the IP address of our devices.
+In my case following is the result:
+1) IP Address: 192.168.16.101
+2) Subnet Mask: 255.255.255.0
+3) Network Address: 192.168.16.0
+4) Broadcast Address: 192.168.16.255
+
+Here Network address is calculated by bitwise & operation between binary IP Address and binary subnet mask.
+Similarly broadcast Address is calculated by bitwise OR operation between the binary network address and the binary inverted subnet mask.
+
+Here the number of host bit is number of 0s in binary subnet mask which is 8 in my case.
+Therefore, the total number of IP addresses = 2^8=256.
+Since, we have to allocate one IP address for network address and another for broadcast address. Therefore, Number of usable 
+IP addresses= 256-2= 254= number of end devices supported by my network.
+
+Hence, total number of end devices supported by my network is 254.

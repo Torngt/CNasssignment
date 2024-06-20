@@ -4,4 +4,4 @@ b) Subnet Mask
 c) Broadcast Address
 d) The number of end devices your network support
 
-Simulate your networkon packet tracer.
+Simulate your network on packet tracer.
