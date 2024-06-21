@@ -3,7 +3,7 @@
 3. Network address   : 192.168.1.0
 4. Broadcast address : 192.168.1.255
 
-5. Total number of available addresses :
+5. Total number of available addresses :  
 	2^8=256
 (since two addresses are reserved. one as network address another as broadcast address)
 
