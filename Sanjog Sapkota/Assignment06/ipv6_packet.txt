@@ -1,0 +1,33 @@
+Headers and Their Values
+
+Version (4 bits)
+Value: 0x6
+Explanation: The value 0x6 (or 6 in decimal) in the first 4 bits indicates that the packet is using IPv6.
+
+Traffic Class (8 bits)
+Value: 0x00
+Explanation: The first 6 bits of 0x00 indicate that the packet is of normal type with no special Quality of Service (QoS) requested. The last 2 bits indicate that no explicit congestion notification (ECN) is requested.
+
+Flow Label (20 bits)
+Value: 0x18089
+Explanation: This value is used by the source to indicate that packets with this flow label belong to the same flow. This allows routers and switches in the network to identify and possibly provide special handling for this flow based on the network devices' policies and capabilities.
+
+Payload Length (16 bits)
+Value: 56
+Explanation: This indicates that the payload (the data following the IPv6 header) is 56 bytes long.
+
+Next Header (8 bits)
+Value: 17 (UDP)
+Explanation: The value 17 indicates that the next header is the User Datagram Protocol (UDP).
+
+Hop Limit (8 bits)
+Value: 1
+Explanation: The packet is allowed to be forwarded by up to 1 router. Each time a router forwards the packet, it decreases the Hop Limit by one. When the Hop Limit reaches zero, the packet is discarded to prevent it from looping indefinitely in the network.
+
+Source Address (128 bits)
+Value: fe80::3344:4c1e:54a0:3fc2
+Explanation: This is the IPv6 address of the sender, indicating that the packet is coming from this address.
+
+Destination Address (128 bits)
+Value: ff02::1:2
+Explanation: This is the IPv6 address of the receiver, indicating that the packet is intended for this address.
