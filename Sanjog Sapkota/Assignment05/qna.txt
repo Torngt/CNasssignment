@@ -1,0 +1,55 @@
+ Q)  What is the value of each of the header fields ? Explain why the value is what it is .
+a. Version (4 bits)
+Value = 4
+This means the IP version is 4, indicating that the packet is using IPv4.
+
+b. Header Length (IHL) (4 bits)
+Value = 5
+This indicates the number of 32-bit words in the header. A value of 5 means the header is 20 bytes long (5 * 4 bytes).
+
+c. DSCP (6 bits)
+Value = 0x00
+The value 0x00 indicates a DSCP value which is associated with the default forwarding behavior. DSCP (Differentiated Services Code Point) is used for packet classification.
+
+d. ECN (2 bits)
+Value = 00
+This value indicates that the packet is not using Explicit Congestion Notification (ECN). It is not ECN-capable, and any network devices should not set or interpret ECN-related bits for this packet.
+
+e. Total Length (2 bytes)
+Value = 169
+This value indicates that the entire packet, including the header and data, is 169 bytes long.
+
+f. Identification (2 bytes)
+Value = 0x7a8d
+This value indicates that the identification value of the packet is 31373 (in decimal). This is used for identifying fragments of the original packet.
+
+g. Flags (3 bits)
+Value = 0x0
+The value 0x0 identifies that the packet may be fragmented if necessary. This means:
+Reserved bit: 0
+Don't Fragment (DF) bit: 0
+More Fragments (MF) bit: 0
+
+h. Fragment Offset (13 bits)
+Value = 0
+This indicates where in the datagram this fragment belongs. A value of 0 means the packet is not fragmented.
+
+i. TTL (Time to Live) (1 byte)
+Value = 64
+This indicates the packet can pass through 64 routers before being discarded. TTL is used to prevent packets from circulating indefinitely.
+
+j. Protocol (1 byte)
+Value = 17 (UDP)
+This means the User Datagram Protocol (UDP) is being used in the data portion of the IP packet.
+
+k. Header Checksum (2 bytes)
+Value = 0x7ca1
+This checksum value is used to check the integrity of the header. It ensures that the header contents have not been corrupted during transmission.
+
+l. Source Address (4 bytes)
+Value = 192.168.1.40
+This indicates the IP address of the sender. The packet is sent from the IP address 192.168.1.40.
+
+m. Destination Address (4 bytes)
+Value = 192.168.1.74
+This indicates the IP address of the receiver. The packet is intended for the IP address 192.168.1.74.
