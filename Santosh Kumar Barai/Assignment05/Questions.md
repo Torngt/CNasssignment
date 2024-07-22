@@ -4,5 +4,3 @@
 2) On leetcode find a problem that can be solved with Dijkstra's algorithm and solve it .
 
 3) On leetcode find a problem that can be solved with Bellman-Ford algorithm and solve it. 
-
-4) For each of your solution build a flowchart and a table that shows all the updates to all your varaiables
