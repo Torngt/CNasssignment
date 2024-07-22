@@ -1,0 +1,34 @@
+ How long is IPv6 header?What are the different fields?What are the purpose of different header fields?
+
+The IPv6 header is fixed at 40 bytes in length. 
+Here are the fields in the IPv6 header along with their purposes:
+
+Version (4 bits)
+Purpose: Indicates the IP version. For IPv6, this value is always 6.
+
+Traffic Class (8 bits)
+Purpose: Used for packet classification and prioritization, similar to the DSCP field in IPv4.
+ It allows for differentiated services and quality of service (QoS).
+
+Flow Label (20 bits)
+Purpose: Used to identify packets that belong to the same flow.
+ It allows routers to identify and handle flows of packets in a consistent manner, improving the efficiency of packet forwarding.
+
+Payload Length (16 bits)
+Purpose: Indicates the length of the payload (the data following the header) in bytes.
+ It does not include the length of the IPv6 header itself.
+
+Next Header (8 bits)
+Purpose: Identifies the type of header immediately following the IPv6 header.
+ This can indicate various extension headers or the upper-layer protocol (e.g., TCP, UDP).
+
+Hop Limit (8 bits)
+Purpose: Specifies the maximum number of hops (routers) that the packet can traverse.
+ This is similar to the TTL field in IPv4. Each router that forwards the packet decrements this value by one.
+  If the Hop Limit reaches zero, the packet is discarded.
+
+Source Address (128 bits)
+Purpose: Contains the IPv6 address of the originator of the packet.
+
+Destination Address (128 bits)
+Purpose: Contains the IPv6 address of the intended recipient of the packet.
