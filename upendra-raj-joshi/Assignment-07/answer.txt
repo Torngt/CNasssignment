@@ -1,0 +1,55 @@
+How long is IPV6 header?
+:IPV6 header is 40 bytes long consisting 8 fields
+
+What are different fields on header? What are different purposes?
+: Fixed header - fields and their purpose are:
+version (4 bits)
+the constant 6 bits 0110 indicates it is IPV6
+
+trafic class (8 bits)
+It has 6 bits for type of service and 2 bits for ECN
+
+flow label (20 bits)
+It is for streaming real time data maintaing sequential flow of packets
+
+payload length (16 bits)
+It tells router how much information a particular packet contains in its payload
+
+next header (8 bits)  
+This field indicates either type of extension header or upper layer PDU
+
+hop limit (8 bits)
+It stops packet to loop in network infinitely (like TTL)
+
+source address (128 bits)
+This field contains address of originator packet
+
+destination address (128 bits)
+This field contains address of originator packet
+
+Headers present in IPV6 packet in wireshark:
+
+1. Version (4 bits):
+   Value: 0110
+   Description: This field indicates the version of the Internet Protocol. For IPv6, the value is 6 (0110 in binary).
+2. Traffic Class (8 bits):
+   Value: 00
+   Description: This field is used to identify the class or priority of the IPv6 packet, similar to the Type of Service (ToS) field in IPv4. It's generally used for Quality of Service (QoS) purposes.
+3. Flow Label (20 bits):
+   Value: 0x00000
+   Description: The flow label is used to identify a flow of packets that require special handling by routers. This field is used for purposes like ensuring packets from the same flow are processed in a similar manner.
+4. Payload Length (16 bits):
+   Value: 107
+   Description: This field specifies the length of the payload, i.e., the data following the IPv6 header, in bytes. In this case, the payload length is 107 bytes.
+5. Next Header (8 bits):
+   Value: 58
+   Description: This field identifies the type of header immediately following the IPv6 header. The value 17 corresponds to the User Datagram Protocol (UDP).
+6. Hop Limit (8 bits):
+   Value: 255
+   Description: This field is similar to the Time-to-Live (TTL) field in IPv4. It specifies the maximum number of hops (routers) the packet can pass through. Each router that forwards the packet decreases the hop limit by one. If the hop limit reaches zero, the packet is discarded. In this packet, the hop limit is set to 255.
+7. Source Address (128 bits):
+   Value: fe80::9e73:70ff:fe70:3610
+   Description: This field contains the IPv6 address of the sender. The address fe80::/10 is a link-local address, which means it is used for communication within the local network segment.
+8. Destination Address (128 bits):
+   Value: ff02::2
+   Description: This field contains the IPv6 address of the intended recipient. The address ff02::fb is a multicast address used for MDNS (Multicast DNS), which is used to resolve hostnames to IP addresses within the same local network.
