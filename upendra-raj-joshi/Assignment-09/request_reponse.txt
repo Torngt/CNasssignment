@@ -1,0 +1,25 @@
+1. Capture the packet while sending an HTTP requests.Also,capture the response in wireshark.Dissect the request and response.
+->
+  
+  A. HTTP Request Dissection
+     An HTTP request consists of several components: the request line, headers, and optionally a body. Here’s how to dissect it:
+     Request Line :- 
+        - Method : Indicates the HTTP method used (e.g., GET, POST, PUT, DELETE).
+        - URL : The path of the resource being requested.
+        - Version: The HTTP version being used (e.g., HTTP/1.1).                      
+        - Example: GET /connecttest.txt HTTP/1.1\r\n
+              •	Method: GET
+              •	URL: www.msftconnecttest/connecttest.txt
+              •	Version: HTTP/1.1   
+
+
+   B. HTTP Response Dissection 
+      An HTTP response consists of a status line, headers, and optionally a body. Here’s how to dissect it:
+      Status Line :-
+        - Version : The HTTP version used (e.g., HTTP/1.1).
+        - Status Code : A three-digit code indicating the result of the request (e.g., 200, 404, 500).
+    	- Reason Phrase : A brief description of the status code (e.g., OK, Not Found, Internal Server Error).
+        - Example : HTTP/1.1 200 OK\r\n
+              •	Version: HTTP/1.1
+              •	Status Code: 200
+              •	Reason Phrase: OK
