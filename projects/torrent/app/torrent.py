@@ -3,7 +3,7 @@ from hashlib import sha1
 import bencode
 from io import BytesIO
 
-BLOCK_LENGTH = 16 * 1024
+BLOCK_LENGTH = 2 ** 14
 
 
 class Torrent:

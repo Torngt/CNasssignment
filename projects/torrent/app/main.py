@@ -90,12 +90,12 @@ def main() -> None:
         with Peer(MY_PEER_ID, torrent, address) as peer:
             piece_data = peer.download_piece(args.piece_index)
 
-        if isinstance(piece_data, bytearray):
-            hex_data = piece_data.hex()
-            with open(args.output, 'wb') as f:
-                f.write(hex_data)
+        # if isinstance(piece_data, bytearray):
+        #     hex_data = piece_data.hex()
+        #     with open(args.output, 'wb') as f:
+        #         f.write(hex_data)
 
-            print(f'Piece {args.piece_index} downloaded to {args.output}.')
+        #     print(f'Piece {args.piece_index} downloaded to {args.output}.')
 
 
 if __name__ == '__main__':
