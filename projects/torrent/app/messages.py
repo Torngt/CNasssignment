@@ -72,23 +72,23 @@ class HandshakeMessage(HasStructMixin, Message):
         return cls(info_hash=info_hash, peer_id=peer_id, reserved=reserved)
 
 
-class KeepAliveMessage(Message):
+class KeepAliveMessage(Message): # this is a message that is sent to keep the connection alive
     pass
 
 
-class ChokeMessage(TypedMessage):
+class ChokeMessage(TypedMessage): # this is a message that is sent to choke the connection
     _type: int = 0
 
 
-class UnchokeMessage(TypedMessage):
+class UnchokeMessage(TypedMessage): # this is a message that is sent to unchoke the connection
     _type: int = 1
 
 
-class InterestedMessage(TypedMessage):
+class InterestedMessage(TypedMessage): # this is a message that is sent to show interest in the connection
     _type: int = 2
 
 
-class NotInterestedMessage(TypedMessage):
+class NotInterestedMessage(TypedMessage): # this is a message that is sent to show disinterest in the connection
     _type: int = 3
 
 
@@ -117,7 +117,7 @@ class BitfieldMessage(TypedMessage):
 
     _type: int = 5
 
-    def to_bytes(self) -> bytes:
+    def to_bytes(self) -> bytes: # this function converts the bits to bytes
         return self.bits
 
     @classmethod
@@ -125,19 +125,19 @@ class BitfieldMessage(TypedMessage):
         return cls(bits=data)
 
     @staticmethod
-    def bytes_to_bits(b: bytes) -> str:
+    def bytes_to_bits(b: bytes) -> str: # this function converts the bytes to bits using the format function and returns the result
         return format(int.from_bytes(b, byteorder='big'), '08b')
 
     @staticmethod
-    def bits_to_bytes(b: str) -> bytes:
+    def bits_to_bytes(b: str) -> bytes: # this function converts the bits to bytes using the int function and returns the result
         return int(b, 2).to_bytes(4, byteorder='big')
 
 
 @dataclass
-class RequestMessage(HasStructMixin, TypedMessage):
-    index: int
-    begin: int
-    length: int
+class RequestMessage(HasStructMixin, TypedMessage): # request a block of data from the peer
+    index: int # index of the piece
+    begin: int # offset within the piece
+    length: int # length of the block
 
     _format = 'III'
     _type: int = 6
@@ -153,33 +153,33 @@ class RequestMessage(HasStructMixin, TypedMessage):
     def unserialize(cls, data: bytes):
         index, begin, length = cls.unpack(data)
 
-        return cls(index=index, begin=begin, length=length)
+        return cls(index=index, begin=begin, length=length) # returns the index, begin and length of the block
 
 
 @dataclass
 class PieceMessage(HasStructMixin, TypedMessage):
     index: int
     begin: int
-    block: bytes
+    block: bytes # block of data being received
 
-    _format = 'II'
-    _type: int = 7
+    _format = 'II' 
+    _type: int = 7 
 
     def to_bytes(self) -> bytes:
         return self.pack(
             self.index,
             self.begin
-        ) + self.block
+        ) + self.block # appends the block of data to the packed index and begin
 
     @classmethod
     def unserialize(cls, data: bytes):
-        index, begin = cls.unpack(data[:8])
+        index, begin = cls.unpack(data[:8]) # unpacks the index and begin from the data(first 8 bytes)
 
-        return cls(index=index, begin=begin, block=data[8:])
+        return cls(index=index, begin=begin, block=data[8:]) # returns the index, begin and block of data
 
 
 @dataclass
-class CancelMessage(HasStructMixin, TypedMessage):
+class CancelMessage(HasStructMixin, TypedMessage): # this message is sent to cancel a request for a block of data
     index: int
     begin: int
     length: int
@@ -200,26 +200,31 @@ class CancelMessage(HasStructMixin, TypedMessage):
 
         return cls(index=index, begin=begin, length=length)
 
-
+# dictionary of messages types and their corresponding classes
 MESSAGES_BY_ID = {
     msg_class._type: msg_class for msg_class in (ChokeMessage, UnchokeMessage, InterestedMessage, NotInterestedMessage, HaveMessage,
                                   BitfieldMessage, RequestMessage, PieceMessage, CancelMessage)
 }
 
 
-def from_bytes(data: bytes):
+def from_bytes(data: bytes, ):
     if not data:
         LOG.error("Empty message received.")
         raise ValueError("Empty message received.")
 
     message_type = data[0]
     message_payload = data[1:] if len(data) > 1 else b''
+    #message_payload = data[8:] if len(data) > 1 else b''
 
-    class_ = MESSAGES_BY_ID.get(message_type)
+    class_ = MESSAGES_BY_ID.get(message_type) # gets the message type from the dictionary
 
     if not class_:
         LOG.error(f'Unknown message type: {message_type}')
-        LOG.error(f'Data: {data}')
-        raise ValueError(f'Unknown message type: {message_type}, data: {data}')
+        #LOG.error(f'Data: {data}')
+        raise ValueError(f'Unknown message type: {message_type}')
+    
+    # with open(file_path, 'a') as file:
+    #     file.write(f'Received message type: {message_type}\n')
+    #     file.write(f'Message payload: {message_payload}\n\n')
 
-    return class_.unserialize(message_payload)
+    return class_.unserialize(message_payload) # returns the message payload of the class

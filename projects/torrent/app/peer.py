@@ -3,8 +3,8 @@ from torrent import Torrent
 import messages as messages
 import socket 
 import logging
-LOG = logging.getLogger(__name__)
 
+LOG = logging.getLogger(__name__)
 
 class Peer:
     my_peer_id: bytes
@@ -20,7 +20,7 @@ class Peer:
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.socket.settimeout(2)
 
-    def download_piece(self, piece_index: int) -> Union[bytearray, bool]:
+    def download_piece(self, piece_index: int, output_file: str ='sample.txt') -> Union[bytearray, bool]:
         if not self.handshake():
             return False
 
@@ -36,40 +36,61 @@ class Peer:
         if not isinstance(message, messages.UnchokeMessage):
             return False
 
-        piece_length = self.torrent.compute_piece_length(piece_index) # compute piece length
-        piece_data = bytearray(piece_length) # create a bytearray to store the piece data
+        piece_length = self.torrent.compute_piece_length(piece_index)  # compute piece length
 
-        # iterate over the blocks of the piece
-        for block_begin, block_length in self.torrent.iter_blocks(piece_length):
-            self.send(messages.RequestMessage(index=piece_index, begin=block_begin, length=block_length))
+        # open file in binary write mode
+        with open(output_file, 'wb') as f:
+            # iterate over the blocks of the piece
+            for block_begin, block_length in self.torrent.iter_blocks(piece_length):
+                self.send(messages.RequestMessage(index=piece_index, begin=block_begin, length=block_length))
 
-            message = self.receive()
+                while True:
+                    message = self.receive()
 
-            if not isinstance(message, messages.PieceMessage):
-                return False
-
-            if message.index != piece_index:
-                continue
-
-            piece_data[message.begin:len(message.block)] = message.block
-
-        return piece_data
+                    if isinstance(message, messages.PieceMessage) and message.index == piece_index:
+                        f.write(message.block)
+                        break
+                    elif isinstance(message, messages.CancelMessage):
+                        # Handle cancellation message
+                        LOG.warning(f'CancelMessage received: {message}')
+                        return False
+                    elif message is None:
+                        # Handle case where no message is received
+                        LOG.error('No message received')
+                        return False
+                LOG.info(f'Piece {piece_index} downloaded to {output_file}')
+        return True
 
     def receive(self) -> Optional[messages.Message]:
         try:
-            message_length = int.from_bytes(self.socket.recv(4), byteorder='big')
-            if message_length is None:
+            # Read the length prefix
+            length_prefix = self._recv_all(4)
+            if not length_prefix:
                 return None
+            message_length = int.from_bytes(length_prefix, byteorder='big')
             if message_length == 0:
                 return messages.KeepAliveMessage()
 
-            LOG.debug(f'Receiving message of length {message_length}')
-            raw_data = self.socket.recv(message_length)
+            # Read the actual message data
+            raw_data = self._recv_all(message_length)
+            if not raw_data:
+                return None
+
             LOG.debug(f'Received raw data: {raw_data}')
             return messages.from_bytes(raw_data)
         except Exception as e:
             LOG.error(f'Error receiving message: {e}')
             return None
+
+    def _recv_all(self, length: int) -> bytes:
+        """Receive the specified number of bytes from the socket, handling partial reads."""
+        data = b""
+        while len(data) < length:
+            chunk = self.socket.recv(length - len(data))
+            if not chunk:
+                raise Exception("Socket connection broken")
+            data += chunk
+        return data
 
     def send(self, message: messages.Message) -> None:
         self.socket.sendall(message.serialize())
@@ -81,7 +102,7 @@ class Peer:
         ).serialize())
 
         response = messages.HandshakeMessage.unserialize(
-            self.socket.recv(messages.HandshakeMessage.size())
+            self._recv_all(messages.HandshakeMessage.size())
         )
 
         if not isinstance(response, messages.HandshakeMessage):
@@ -90,7 +111,11 @@ class Peer:
         return response
 
     def connect(self) -> None:
-        self.socket.connect(self.address)
+        try:
+            self.socket.connect(self.address)
+            LOG.info(f'Connected to {self.address}')
+        except Exception as e:
+            LOG.error(f'Error connecting to {self.address}: {e}')    
 
     def disconnect(self) -> None:
         self.socket.shutdown(socket.SHUT_RDWR)
@@ -98,7 +123,6 @@ class Peer:
 
     def __enter__(self):
         self.connect()
-
         return self
 
     def __exit__(self, exc_type, exc_value, exc_traceback) -> None:
