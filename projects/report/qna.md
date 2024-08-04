@@ -30,7 +30,7 @@ When you type facebook.com and press Enter, here is a detailed step-by-step expl
   2. **SYN-ACK**: The server responds with a SYN-ACK (synchronize-acknowledge) packet.
   3. **ACK**: The client sends an ACK (acknowledge) packet back to the server, establishing the connection.
 
-     - The URL uses HTTPS, an TLS handshake occurs to establish an encrypted session. This involves exchanging keys, agreeing on encryption algorithms, and establishing a shared encryption key.
+     - The URL uses HTTPS, an TLS handshake occurs to establish an encrypted session. This involves exchanging certificates, agreeing on encryption algorithms, and establishing a shared encryption key.
 
 
  **IP Routing**:
