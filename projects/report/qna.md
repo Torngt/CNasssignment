@@ -30,6 +30,8 @@ When you type facebook.com and press Enter, here is a detailed step-by-step expl
   2. **SYN-ACK**: The server responds with a SYN-ACK (synchronize-acknowledge) packet.
   3. **ACK**: The client sends an ACK (acknowledge) packet back to the server, establishing the connection.
 
+     - The URL uses HTTPS, an TLS handshake occurs to establish an encrypted session. This involves exchanging keys, agreeing on encryption algorithms, and establishing a shared encryption key.
+
 
  **IP Routing**:
 - The IP packets containing the TCP handshake are routed across the internet from the client to the server. This involves traversing multiple routers and networks.
@@ -52,14 +54,12 @@ When you type facebook.com and press Enter, here is a detailed step-by-step expl
 Each hop involves reading the packet's information and preparing it for the next segment of its journey, ensuring that the data is correctly formatted and transmitted across various network segments and devices until it reaches the intended recipient.
 
 
-
-
 ## Server-Side Processes
 - **Destination Router**: The last router in the chain (close to the Facebook data center) forwards the packet to Facebook's server.
   - **Server Reception**: The server receives the frame, decapsulates it to retrieve the IP packet and then the TCP segment, and finally processes the HTTP request.
 
 ###  Application Layer(server side)
-- When the server receives an HTTP request for the Facebook homepage, it first uses load balancing to direct the request to one of its servers. The server then manages user sessions to ensure the request is associated with the correct user profile. It queries databases to retrieve user-specific content, processes this data, and generates the necessary HTML, CSS, JavaScript, and other resources. Finally, it assembles and sends the complete web page back to the client for rendering in the browser.
+- When the server receives an HTTP GET request for the Facebook homepage, it first uses load balancing to direct the request to one of its servers. The server then manages user sessions to ensure the request is associated with the correct user profile. It queries databases to retrieve user-specific content, processes this data, and generates the necessary HTML, CSS, JavaScript, and other resources. Finally, it assembles and sends the complete web page back to the client for rendering in the browser.
 
 ###  Response Transmission
 - **HTTP Response**: The server sends an HTTP response containing the requested resources (HTML, CSS, JavaScript, images) back to the client.
@@ -74,7 +74,7 @@ Each hop involves reading the packet's information and preparing it for the next
 
    #### **2. TCP Packet Construction**
 
-   - **TCP Header**: Each segment includes a TCP header with essential information such as:
+    **TCP Header**: Each segment includes a TCP header with essential information such as:
   - **Sequence Number**: Indicates the position of the segment’s data in the overall message.
   - **Acknowledgment Number**: Used to confirm receipt of segments.
   - **Flags**: Control bits like SYN, ACK, FIN that manage the connection state.
