@@ -10,7 +10,7 @@ class Peer:
     my_peer_id: bytes
     torrent: Torrent
     address: Tuple[str, int]
-    socket: socket.socket
+    socket: socket.socket # type: ignore
 
     def __init__(self, my_peer_id: bytes, torrent: Torrent, address: Tuple[str, int]):
         self.my_peer_id = my_peer_id
