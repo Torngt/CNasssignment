@@ -20,7 +20,7 @@ This project is a simple BitTorrent client implemented in Python. It includes co
 ## Installation
 1. Clone the repository:
    \`\`\`
-   git clone https://github.com/yourusername/torrent-client.git
+   git clone https://github.com/Torngt/CNasssignment.git
    cd torrent-client
    \`\`\`
 2. Install the dependencies:
